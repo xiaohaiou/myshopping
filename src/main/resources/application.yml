@@ -1,15 +1,6 @@
-# 数据库敏感内容加密
-jasypt:
-  encryptor:
-    password: userful
-
-mybatis:
-  mapper-locations: classpath:mapper/**/*.xml
-  type-aliases-package: com.softline.entity
-
 # 端口配置
 server:
-  port: 80
+  port: 8080
   servlet:
     context-path: /userful
     session:
@@ -29,4 +20,4 @@ spring:
 #文件上传
   servlet:
     multipart:
-      max-file-size: 5Mb
+      max-file-size: 5MB

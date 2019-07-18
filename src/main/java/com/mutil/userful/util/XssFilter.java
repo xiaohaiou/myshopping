@@ -1,8 +1,12 @@
 package com.mutil.userful.util;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.mutil.userful.controller.LoginController;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,8 +16,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Slf4j
 public class XssFilter implements Filter {
+	
+	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+	
     /**
      * 是否过滤富文本内容
      */

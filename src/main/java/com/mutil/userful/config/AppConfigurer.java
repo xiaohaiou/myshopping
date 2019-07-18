@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@Slf4j
 public class AppConfigurer implements WebMvcConfigurer {
 
     /**
