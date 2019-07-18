@@ -17,7 +17,7 @@ public class LoginController {
      */
     @RequestMapping("/")
     public String tologinPage() {
-        log.info("进入首页");
+        log.info("进入首页1");
         return "login";
     }
 
