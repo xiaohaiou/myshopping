@@ -1,0 +1,35 @@
+#端口配置
+server:
+  port: 8081
+  servlet:
+    context-path: /userful
+    session:
+      timeout: 3600s
+    jsp:
+      init-parameters:
+        development: true
+
+spring:
+  application:
+    name: userful
+  #整合jsp
+  mvc:
+    view:
+      prefix: /jsp/
+      suffix: .jsp
+  #文件上传
+  servlet: 
+    multipart: 
+      max-file-size: 5MB
+  cloud: 
+    consul: 
+      discovery:
+        enable: true
+        instanceId: ${spring.application.name}:${spring.cloud.client.ipAddress:${random.value}}
+        serviceName: ${spring.application.name}
+        preferIpAddress: true
+        port: ${server.port}
+        healthCheckPath: ${server.context-path}/health
+        tags:
+   
+   
