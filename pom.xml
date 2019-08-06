@@ -50,6 +50,17 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- spring boot 测试依赖-->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
@@ -97,7 +108,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<scope>Compile</scope>
+			<!--<scope>Compile</scope>-->
 		</dependency>
 		<!-- 数据库连接池 -->
 		<dependency>
