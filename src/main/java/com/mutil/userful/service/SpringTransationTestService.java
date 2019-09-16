@@ -1,11 +1,8 @@
 package com.mutil.userful.service;
 
-import com.mutil.userful.dao.UserfulMapper;
-import com.mutil.userful.domain.Userful;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -25,31 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SpringTransationTestService {
 
-    @Autowired
-    private UserfulMapper userfulMapper;
-    @Autowired
-    private SpringTransationTest2Service springTransationTest2Service;
-
     @Transactional(rollbackFor = Exception.class)
     public void saveByTranstion1(){
-        log.info("开始事务1..");
-        Userful userful = new Userful();
-        userful.setName("transtionName1_1");
-        userful.setPhone("12222222222");
-        userfulMapper.insert(userful);
-        log.info("结束事务1..");
-        springTransationTest2Service.saveByTranstion2_1();
     }
-
-//    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
-//    public void saveByTranstion2(){
-//        log.info("开始事务2..");
-//        Userful userful = new Userful();
-//        userful.setName("transtionName1_2");
-//        userful.setPhone("12222222222");
-//        userfulMapper.insert(userful);
-//        log.info("结束事务2..");
-//        springTransationTest2Service.saveByTranstion2_1();
-//    }
 
 }

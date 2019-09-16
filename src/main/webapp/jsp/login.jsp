@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
+<%
+	String path = request.getContextPath() ;
+%>
 <head>
 	<meta charset="UTF-8">
 	<title>登录</title>
@@ -67,22 +70,35 @@
 	</style>
 </head>
 <body>
-	<div class="wrap">
-		<div class="login">
-			<h1>model</h1>
-			<div class="inputs">
-				<img src="img/user.png" alt=""><input id="userName" name="userName" type="text" placeholder="账号">
-			</div>
-			<div class="inputs">
-				<img src="img/psw.png" alt=""><input id="password" name="password" type="text" placeholder="密码">
-			</div>
-			<div class="btnLogin" name="button" type="submit" id="submit"><span>登录</span></div>
-		</div>
-	</div>
-	
-	<script src='assets/javascripts/jquery/jquery.min.js' type='text/javascript'></script>
+	<%--<div class="wrap">--%>
+		<%--<div class="login">--%>
+			<%--<h1>model</h1>--%>
+			<%--<div class="inputs">--%>
+				<%--<img src="img/user.png" alt=""><input id="userName" name="userName" type="text" placeholder="账号">--%>
+			<%--</div>--%>
+			<%--<div class="inputs">--%>
+				<%--<img src="img/psw.png" alt=""><input id="password" name="password" type="text" placeholder="密码">--%>
+			<%--</div>--%>
+			<%--<div class="btnLogin" name="button" type="submit" id="submit"><span>登录</span></div>--%>
+		<%--</div>--%>
+	<%--</div>--%>
+
+	${msg }
+	<br>
+	<form action="${pageContext.request.contextPath}/upload" method="post" enctype="multipart/form-data">
+		<input type="file" name="file">
+		<input type="submit" value="提交">
+	</form>
+
+
+	<script src='${pageContext.request.contextPath}/js/jquery.min.js' type='text/javascript'></script>
 	<script type='text/javascript'>
 	$(document).ready(function(){
+
+	    console.log('${pageContext.request.contextPath}')
+
+
+
 		$("#userName").keydown(function(e){
 			if(e.which == 13){
 				$("#submit").click();

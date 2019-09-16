@@ -1,7 +1,7 @@
 package com.mutil.userful.util;
 
 import org.springframework.beans.BeansException;
-import org.springframework.cloud.consul.discovery.ConsulDiscoveryProperties;
+//import org.springframework.cloud.consul.discovery.ConsulDiscoveryProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -19,8 +19,8 @@ import javax.annotation.Resource;
 public class SpringBeanUtil implements ApplicationContextAware {
 
 	private static ApplicationContext applicationContext;
-	@Resource
-	ConsulDiscoveryProperties consulDiscoveryProperties;
+//	@Resource
+//	ConsulDiscoveryProperties consulDiscoveryProperties;
 	
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if(SpringBeanUtil.applicationContext == null) {

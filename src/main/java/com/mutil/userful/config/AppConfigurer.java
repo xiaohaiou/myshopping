@@ -27,7 +27,7 @@ public class AppConfigurer implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(intercepor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/validateLogin","/assets/**","/img/**","/css/**","/js/**","/font/**","/","/login");
+                .excludePathPatterns("/assets/**","/img/**","/css/**","/js/**","/font/**","/manage/**");
     }
 
     /**
