@@ -5,7 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mutil.userful.controller.LoginController;
+import com.mutil.userful.controller.PreUserController;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 
 public class XssFilter implements Filter {
 	
-	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+	private static final Logger log = LoggerFactory.getLogger(PreUserController.class);
 	
     /**
      * 是否过滤富文本内容

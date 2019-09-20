@@ -5,6 +5,8 @@ import com.github.tobato.fastdfs.domain.fdfs.ThumbImageConfig;
 import com.github.tobato.fastdfs.domain.proto.storage.DownloadCallback;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,8 @@ import java.io.InputStream;
 
 @Component
 public class FastDFSClientUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(FastDFSClientUtil.class);
 
     @Value("${fdfs.reqHost}")
     private String reqHost;
@@ -30,9 +34,8 @@ public class FastDFSClientUtil {
                                                         file.getSize(),
                                                         FilenameUtils.getExtension(file.getOriginalFilename()),
                                                         null);
-
         String path = thumbImageConfig.getThumbImagePath(storePath.getPath()) ;
-        System.out.println("thumbImage :" + path);  //   缩略图访问有问题，暂未解决
+        log.info("thumbImage :" + path);  //   缩略图访问有问题，暂未解决
         return getResAccessUrl(storePath);
     }
 

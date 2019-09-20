@@ -19,9 +19,56 @@
     from mmall_cart
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectCartsByUseId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from mmall_cart
+    where user_id= #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectCartProductCheckedStatusByUserId" resultType="int" parameterType="int">
+    SELECT  count(1) from mmall_cart where checked = 0 and user_id = #{userId}
+  </select>
+  <select id="selectCartByCart" resultMap="BaseResultMap" parameterType="com.mutil.userful.domain.MmallCart" >
+    select
+    <include refid="Base_Column_List" />
+    from mmall_cart
+    <where>
+      <if test="id != null" >
+        id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        and user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="productId != null" >
+        and product_id = #{productId,jdbcType=INTEGER}
+      </if>
+      <if test="quantity != null" >
+        and quantity = #{quantity,jdbcType=INTEGER}
+      </if>
+      <if test="checked != null" >
+        and checked = #{checked,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from mmall_cart
     where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByUserIdProductIds" parameterType="map">
+    delete from mmall_cart
+    where user_id = #{userId}
+    <if test="productIdList != null">
+      and product_id in
+      <foreach collection="productIdList" item="item" index="index" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
   </delete>
   <insert id="insert" parameterType="com.mutil.userful.domain.MmallCart" >
     insert into mmall_cart (id, user_id, product_id, 
