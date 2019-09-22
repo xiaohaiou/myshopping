@@ -28,6 +28,9 @@
   <select id="selectCartProductCheckedStatusByUserId" resultType="int" parameterType="int">
     SELECT  count(1) from mmall_cart where checked = 0 and user_id = #{userId}
   </select>
+  <select id="selectCartNum" resultType="int" parameterType="int">
+    SELECT sum(quantity) from mmall_cart where user_id = #{userId}
+  </select>
   <select id="selectCartByCart" resultMap="BaseResultMap" parameterType="com.mutil.userful.domain.MmallCart" >
     select
     <include refid="Base_Column_List" />
@@ -161,4 +164,10 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateForSelectOrUnSelectAll">
+    update mmall_cart
+    set checked = #{checked,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
 </mapper>

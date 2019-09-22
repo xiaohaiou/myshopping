@@ -99,13 +99,13 @@ public class PreCartController {
     }
 
     @ApiOperation(value="购物车选中某个商品", notes="购物车选中某个商品")
-    @RequestMapping(value="/selectProduct.do/{productId}",method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value="/selectProduct.do/{productId}",method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
     @ResponseBody
     @ApiImplicitParams({
             @ApiImplicitParam(name = "productId", value = "产品ID", required = true, paramType = "path"),
     })
     public ServerResponse selectProduct(HttpSession session,
-                                        @PathVariable("productId")String productId){
+                                        @PathVariable("productId")Integer productId){
         MmallUser user = (MmallUser)session.getAttribute(Const.CURRENT_USER);
         if(null==user){
             return ServerResponse.createByErrorMessage("用户未登入，无访问权限！");
@@ -113,7 +113,40 @@ public class PreCartController {
         if(null==productId){
             return ServerResponse.createByErrorMessage("参数有误，请重新输入！");
         }
-        return preCartService.reomveProduct(user.getId(),productId);
+        return preCartService.selectProduct(user.getId(),productId);
+    }
+
+    @ApiOperation(value="查询购物车产品数量", notes="查询购物车产品数量")
+    @RequestMapping(value="/getProductCount.do",method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ServerResponse getProductCount(HttpSession session){
+        MmallUser user = (MmallUser)session.getAttribute(Const.CURRENT_USER);
+        if(null==user){
+            return ServerResponse.createByErrorMessage("用户未登入，无访问权限！");
+        }
+        return preCartService.getProductCount(user.getId());
+    }
+
+    @ApiOperation(value="购物车产品全选", notes="购物车全选")
+    @RequestMapping(value="/selectAll.do",method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ServerResponse selectAll(HttpSession session){
+        MmallUser user = (MmallUser)session.getAttribute(Const.CURRENT_USER);
+        if(null==user){
+            return ServerResponse.createByErrorMessage("用户未登入，无访问权限！");
+        }
+        return preCartService.selectAll(user.getId(),Const.Cart.CHECKED);
+    }
+
+    @ApiOperation(value="购物车产品不全选", notes="购物车不全选")
+    @RequestMapping(value="/unSelectAll.do",method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ServerResponse unSelectAll(HttpSession session){
+        MmallUser user = (MmallUser)session.getAttribute(Const.CURRENT_USER);
+        if(null==user){
+            return ServerResponse.createByErrorMessage("用户未登入，无访问权限！");
+        }
+        return preCartService.selectAll(user.getId(),Const.Cart.UN_CHECKED);
     }
 
 }

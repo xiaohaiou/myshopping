@@ -3,9 +3,11 @@ package com.mutil.userful.controller;
 import com.mutil.userful.common.Const;
 import com.mutil.userful.common.ServerResponse;
 import com.mutil.userful.domain.MmallUser;
+import com.mutil.userful.domain.requestparam.ValidateResult;
 import com.mutil.userful.domain.requestparam.product.MgAddProductRequest;
 import com.mutil.userful.service.MgProductService;
 import com.mutil.userful.util.FastDFSClientUtil;
+import com.mutil.userful.util.ValidatorUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Arrays;
 
 @Controller
 @RequestMapping(value = "/manage/product")
@@ -144,6 +147,11 @@ public class MgProductController {
         }
         if(user.getRole()!=Const.Role.ROLE_ADMIN){
             return ServerResponse.createByErrorMessage("不是管理员，无操作权限！");
+        }
+        // 参数效验
+        ValidateResult validateResult = ValidatorUtil.validator(mgAddProductRequest);
+        if(!validateResult.isSuccess()){
+            return ServerResponse.createByErrorMessage(Arrays.toString(validateResult.getErrMsg()));
         }
         return mgProductService.addorupdate(mgAddProductRequest);
     }

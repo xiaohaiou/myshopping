@@ -3,14 +3,17 @@ package com.mutil.userful.controller;
 import com.mutil.userful.common.Const;
 import com.mutil.userful.common.ServerResponse;
 import com.mutil.userful.domain.MmallUser;
+import com.mutil.userful.domain.requestparam.ValidateResult;
 import com.mutil.userful.domain.requestparam.category.MgAddCategoryRequest;
 import com.mutil.userful.service.MgCategoryService;
+import com.mutil.userful.util.ValidatorUtil;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -50,6 +53,11 @@ public class MgCategoryController {
         }
         if(!mgCategoryService.checkAdmin(mmallUser).isSuccess()){
             return ServerResponse.createByErrorMessage("不是管理员，无访问权限！");
+        }
+        // 参数效验
+        ValidateResult validateResult = ValidatorUtil.validator(addCategoryRequest);
+        if(!validateResult.isSuccess()){
+            return ServerResponse.createByErrorMessage(Arrays.toString(validateResult.getErrMsg()));
         }
         return mgCategoryService.addCategory(addCategoryRequest);
     }
