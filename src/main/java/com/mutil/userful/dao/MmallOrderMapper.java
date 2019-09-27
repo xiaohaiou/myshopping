@@ -2,6 +2,8 @@ package com.mutil.userful.dao;
 
 import com.mutil.userful.domain.MmallOrder;
 
+import java.util.List;
+
 public interface MmallOrderMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -10,6 +12,8 @@ public interface MmallOrderMapper {
     int insertSelective(MmallOrder record);
 
     MmallOrder selectByPrimaryKey(Integer id);
+
+    List<MmallOrder> selectOrderBySelectorBean(MmallOrder mmallOrder);
 
     int updateByPrimaryKeySelective(MmallOrder record);
 

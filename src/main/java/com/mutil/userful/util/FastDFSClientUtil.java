@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -34,6 +36,16 @@ public class FastDFSClientUtil {
                                                         file.getSize(),
                                                         FilenameUtils.getExtension(file.getOriginalFilename()),
                                                         null);
+        String path = thumbImageConfig.getThumbImagePath(storePath.getPath()) ;
+        log.info("thumbImage :" + path);  //   缩略图访问有问题，暂未解决
+        return getResAccessUrl(storePath);
+    }
+
+    public String uploadFile(File file) throws IOException {
+        StorePath storePath = storageClient.uploadFile(new FileInputStream(file),
+                file.length(),
+                FilenameUtils.getExtension(file.getName()),
+                null);
         String path = thumbImageConfig.getThumbImagePath(storePath.getPath()) ;
         log.info("thumbImage :" + path);  //   缩略图访问有问题，暂未解决
         return getResAccessUrl(storePath);

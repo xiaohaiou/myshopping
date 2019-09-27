@@ -24,6 +24,46 @@
     from mmall_order_item
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByMmallOrderItem" resultMap="BaseResultMap" parameterType="com.mutil.userful.domain.MmallOrderItem">
+    select
+    <include refid="Base_Column_List" />
+    from mmall_order_item
+    <where>
+      <if test="id != null" >
+        id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        and user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="orderNo != null" >
+        and order_no = #{orderNo,jdbcType=BIGINT}
+      </if>
+      <if test="productId != null" >
+        and product_id = #{productId,jdbcType=INTEGER}
+      </if>
+      <if test="productName != null" >
+        and product_name = #{productName,jdbcType=VARCHAR}
+      </if>
+      <if test="productImage != null" >
+        and product_image = #{productImage,jdbcType=VARCHAR}
+      </if>
+      <if test="currentUnitPrice != null" >
+        and current_unit_price = #{currentUnitPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="quantity != null" >
+        and quantity =  #{quantity,jdbcType=INTEGER}
+      </if>
+      <if test="totalPrice != null" >
+        and total_price = #{totalPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="createTime != null" >
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from mmall_order_item
     where id = #{id,jdbcType=INTEGER}
@@ -38,6 +78,29 @@
       #{currentUnitPrice,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
+  <insert id="insertBatch" parameterType="list">
+    insert into mmall_order_item (id, order_no,user_id, product_id,
+    product_name, product_image, current_unit_price,
+    quantity, total_price, create_time,
+    update_time)
+    values
+    <foreach collection="list" index="index" item="item" separator=",">
+      (
+      #{item.id},
+      #{item.orderNo},
+      #{item.userId},
+      #{item.productId},
+      #{item.productName},
+      #{item.productImage},
+      #{item.currentUnitPrice},
+      #{item.quantity},
+      #{item.totalPrice},
+      now(),
+      now()
+      )
+    </foreach>
+  </insert>
+
   <insert id="insertSelective" parameterType="com.mutil.userful.domain.MmallOrderItem" >
     insert into mmall_order_item
     <trim prefix="(" suffix=")" suffixOverrides="," >

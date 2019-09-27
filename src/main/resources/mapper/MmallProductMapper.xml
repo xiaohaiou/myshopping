@@ -82,7 +82,16 @@
       and update_time = #{updateTime,jdbcType=TIMESTAMP}
     </if>
   </select>
-
+  <select id="selectByMmallProduct" resultMap="BaseResultMap" parameterType="com.mutil.userful.domain.MmallCart">
+    select
+    <include refid="Base_Column_List" />
+    from mmall_product
+    where status = 1
+    and id in
+    <foreach collection="list" open="(" close=")" separator="," item="cart">
+      #{cart.productId,jdbcType=INTEGER}
+    </foreach>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from mmall_product
     where id = #{id,jdbcType=INTEGER}
@@ -244,5 +253,14 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByBatch"  parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+      update mmall_product
+      <set>
+        stock=${item.stock}
+      </set>
+      where id = ${item.id}
+    </foreach>
   </update>
 </mapper>
