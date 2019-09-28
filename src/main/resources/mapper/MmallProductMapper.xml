@@ -82,7 +82,7 @@
       and update_time = #{updateTime,jdbcType=TIMESTAMP}
     </if>
   </select>
-  <select id="selectByMmallProduct" resultMap="BaseResultMap" parameterType="com.mutil.userful.domain.MmallCart">
+  <select id="selectByMmallCertList" resultMap="BaseResultMap" parameterType="java.util.List">
     select
     <include refid="Base_Column_List" />
     from mmall_product

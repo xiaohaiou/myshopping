@@ -115,8 +115,62 @@ public class PreOrderController {
         return preOrderService.create(user.getId(),shippingId);
     }
 
+    @ApiOperation(value="获取订单商品信息", notes="获取订单商品信息")
+    @RequestMapping(value="/product.do",method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ServerResponse product(HttpSession session){
+        MmallUser user = (MmallUser)session.getAttribute(Const.CURRENT_USER);
+        if(null==user){
+            return ServerResponse.createByErrorMessage("用户未登入，无访问权限！");
+        }
+        return preOrderService.product(user.getId());
+    }
 
+    @ApiOperation(value="订单列表", notes="订单列表")
+    @RequestMapping(value="/list.do/{pageSize}/{pageNum}",method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageSize", value = "每页显示数据", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "pageNum", value = "页码", required = true, paramType = "path"),
+    })
+    public ServerResponse pay(HttpSession session,
+                              @PathVariable("pageSize")Integer pageSize,
+                              @PathVariable("pageNum")Integer pageNum){
+        MmallUser user = (MmallUser)session.getAttribute(Const.CURRENT_USER);
+        if(null==user){
+            return ServerResponse.createByErrorMessage("用户未登入，无访问权限！");
+        }
+        return preOrderService.getOrders(user.getId(),pageNum,pageSize);
+    }
 
+    @ApiOperation(value="订单详情", notes="订单详情")
+    @RequestMapping(value="/detail.do/{orderNo}",method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderNo", value = "订单号", required = true, paramType = "path"),
+    })
+    public ServerResponse detail(HttpSession session,
+                                 @PathVariable("orderNo")Long orderNo){
+        MmallUser user = (MmallUser)session.getAttribute(Const.CURRENT_USER);
+        if(null==user){
+            return ServerResponse.createByErrorMessage("用户未登入，无访问权限！");
+        }
+        return preOrderService.detail(user.getId(),orderNo);
+    }
 
+    @ApiOperation(value="取消订单", notes="取消订单")
+    @RequestMapping(value="/cancel.do/{orderNo}",method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderNo", value = "订单号", required = true, paramType = "path"),
+    })
+    public ServerResponse cancel(HttpSession session,
+                                 @PathVariable("orderNo")Long orderNo){
+        MmallUser user = (MmallUser)session.getAttribute(Const.CURRENT_USER);
+        if(null==user){
+            return ServerResponse.createByErrorMessage("用户未登入，无访问权限！");
+        }
+        return preOrderService.cancel(user.getId(),orderNo);
+    }
 
 }

@@ -9,6 +9,8 @@ import com.alipay.demo.trade.model.result.AlipayF2FPrecreateResult;
 import com.alipay.demo.trade.service.AlipayTradeService;
 import com.alipay.demo.trade.service.impl.AlipayTradeServiceImpl;
 import com.alipay.demo.trade.utils.ZxingUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mutil.userful.common.Const;
@@ -16,6 +18,7 @@ import com.mutil.userful.common.ServerResponse;
 import com.mutil.userful.dao.*;
 import com.mutil.userful.domain.*;
 import com.mutil.userful.domain.vo.OrderItemVo;
+import com.mutil.userful.domain.vo.OrderProductVo;
 import com.mutil.userful.domain.vo.OrderVo;
 import com.mutil.userful.domain.vo.ShippingVo;
 import com.mutil.userful.util.BigDecimalUtil;
@@ -434,6 +437,130 @@ public class PreOrderService {
         }
         MmallOrder order = orderList.get(0);
         return ServerResponse.createBySuccess(order.getStatus());
+    }
+
+    /**
+     * 查询产品信息
+     * @param userId
+     * @return
+     */
+    public ServerResponse product(Integer userId){
+        OrderProductVo orderProductVo = new OrderProductVo();
+        MmallCart selectMmallCart = new MmallCart();
+        selectMmallCart.setUserId(userId);
+        selectMmallCart.setChecked(1);
+        List<MmallCart> mmallCartList = mmallCartMapper.selectCartByCart(selectMmallCart);
+        if(CollectionUtils.isEmpty(mmallCartList)){
+            return ServerResponse.createByErrorMessage("无商品信息！");
+        }
+
+        ServerResponse orderItemResponse = this.getCartOrderItem(userId,mmallCartList);
+        if(!orderItemResponse.isSuccess()){
+            return orderItemResponse;
+        }
+        List<MmallOrderItem> mmallOrderItemList = (List<MmallOrderItem>)orderItemResponse.getData();
+        List<OrderItemVo> orderItemVoList = Lists.newArrayList();
+        BigDecimal paymentBD = new BigDecimal("0");
+        for(MmallOrderItem orderItem:mmallOrderItemList){
+            OrderItemVo orderItemVo = new OrderItemVo();
+            paymentBD = BigDecimalUtil.add(paymentBD.doubleValue(),orderItem.getTotalPrice().doubleValue());
+            BeanUtils.copyProperties(orderItem,orderItemVo);
+            orderItemVoList.add(orderItemVo);
+        }
+        orderProductVo.setProductTotalPrice(paymentBD);
+        orderProductVo.setOrderItemVoList(orderItemVoList);
+        return ServerResponse.createBySuccess(orderProductVo);
+    }
+
+    /**
+     * 查询订单信息
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public ServerResponse getOrders(Integer userId,Integer pageNum,Integer pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        MmallOrder selectMmallOrder = new MmallOrder();
+        selectMmallOrder.setUserId(userId);
+        List<MmallOrder> mmallOrderList = mmallOrderMapper.selectOrderBySelectorBean(selectMmallOrder);
+        if(CollectionUtils.isEmpty(mmallOrderList)){
+            return ServerResponse.createByErrorMessage("未查到订单信息！");
+        }
+        PageInfo pageInfo = new PageInfo(mmallOrderList);
+        List<OrderVo> orderVoList = this.assembleOrderVo(mmallOrderList);
+        pageInfo.setList(orderVoList);
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    // 查询订单信息
+    private List<OrderVo> assembleOrderVo(List<MmallOrder> mmallOrderList){
+        List<OrderVo> orderVoList = Lists.newArrayList();
+        mmallOrderList.stream().forEach(order->{
+            OrderVo orderVo = new OrderVo();
+            BeanUtils.copyProperties(order,orderVo);
+            orderVoList.add(orderVo);
+        });
+        return orderVoList;
+    }
+
+    /**
+     * 查询订单详情
+     * @param userId
+     * @param orderNo
+     * @return
+     */
+    public ServerResponse detail(Integer userId,Long orderNo){
+
+        MmallOrder selectMmallOrder = new MmallOrder();
+        selectMmallOrder.setUserId(userId);
+        selectMmallOrder.setOrderNo(orderNo);
+        List<MmallOrder> mmallOrderList = mmallOrderMapper.selectOrderBySelectorBean(selectMmallOrder);
+        if(CollectionUtils.isEmpty(mmallOrderList)){
+            return ServerResponse.createByErrorMessage("未查到订单信息！");
+        }
+
+        MmallOrder order = mmallOrderList.get(0);
+        List<OrderItemVo> orderItemVoList = Lists.newArrayList();
+        MmallOrderItem selectMmallOrderItem = new MmallOrderItem();
+        selectMmallOrderItem.setUserId(userId);
+        selectMmallOrderItem.setOrderNo(orderNo);
+        List<MmallOrderItem> mmallOrderItemList = mmallOrderItemMapper.selectByMmallOrderItem(selectMmallOrderItem);
+        mmallOrderItemList.stream().forEach(orderItem->{
+            OrderItemVo orderItemVo = new OrderItemVo();
+            BeanUtils.copyProperties(orderItem,orderItemVo);
+            orderItemVoList.add(orderItemVo);
+        });
+
+        OrderVo orderVo = new OrderVo();
+        BeanUtils.copyProperties(order,orderVo);
+        orderVo.setOrderItemVoList(orderItemVoList);
+        return ServerResponse.createBySuccess(orderVo);
+    }
+
+    /**
+     *  删除订单信息
+     * @param userId
+     * @param orderNo
+     * @return
+     */
+    public ServerResponse cancel(Integer userId,Long orderNo){
+
+        MmallOrder selectMmallOrder = new MmallOrder();
+        selectMmallOrder.setUserId(userId);
+        selectMmallOrder.setOrderNo(orderNo);
+
+        List<MmallOrder> mmallOrderList = mmallOrderMapper.selectOrderBySelectorBean(selectMmallOrder);
+        if(CollectionUtils.isEmpty(mmallOrderList)){
+          return ServerResponse.createByErrorMessage("该用户未查到相关订单信息！");
+        }
+
+        MmallOrder order= mmallOrderList.get(0);
+        order.setStatus(Const.OrderStatusEnum.CANCELED.getCode());
+        if(mmallOrderMapper.updateByPrimaryKey(order)==0){
+            return ServerResponse.createByErrorMessage("删除订单信息失败！");
+        }
+        return ServerResponse.createBySuccess();
     }
 
 }
