@@ -2,7 +2,7 @@
 server:
   port: 28090
   servlet:
-    context-path: /helloword
+    context-path: /myshopping
     session:
       timeout: 3600s
     jsp:
@@ -11,7 +11,7 @@ server:
 
 spring:
   application:
-    name: helloword
+    name: myshopping
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver

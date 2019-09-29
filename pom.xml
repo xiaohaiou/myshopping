@@ -11,10 +11,10 @@
 	</parent>
 
 	<groupId>com.api</groupId>
-	<artifactId>helloword</artifactId>
+	<artifactId>myshopping</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>userful</name>
+	<name>myshopping</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
