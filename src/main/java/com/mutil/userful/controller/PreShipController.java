@@ -3,10 +3,7 @@ package com.mutil.userful.controller;
 import com.mutil.userful.common.Const;
 import com.mutil.userful.common.ServerResponse;
 import com.mutil.userful.domain.MmallUser;
-import com.mutil.userful.domain.requestparam.ValidateResult;
-import com.mutil.userful.domain.requestparam.ship.PreAddShipRequest;
 import com.mutil.userful.service.PreShipService;
-import com.mutil.userful.util.ValidatorUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -16,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import zhu.liang.common.requestparam.ship.PreAddShipRequest;
+import zhu.liang.common.util.HibernateValidatorUtil;
+import zhu.liang.common.util.ValidateResult;
 
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
@@ -40,7 +40,7 @@ public class PreShipController {
             return ServerResponse.createByErrorMessage("用户未登入，无访问权限！");
         }
         // 参数效验
-        ValidateResult validateResult = ValidatorUtil.validator(mgAddProductRequest);
+        ValidateResult validateResult = HibernateValidatorUtil.validator(mgAddProductRequest);
         if(!validateResult.isSuccess()){
             return ServerResponse.createByErrorMessage(Arrays.toString(validateResult.getErrMsg()));
         }

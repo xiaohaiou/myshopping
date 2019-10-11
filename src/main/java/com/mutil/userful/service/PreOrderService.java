@@ -11,6 +11,7 @@ import com.alipay.demo.trade.service.impl.AlipayTradeServiceImpl;
 import com.alipay.demo.trade.utils.ZxingUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.tobato.fastdfs.shop.FastDFSClientUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mutil.userful.common.Const;
@@ -21,10 +22,6 @@ import com.mutil.userful.domain.vo.OrderItemVo;
 import com.mutil.userful.domain.vo.OrderProductVo;
 import com.mutil.userful.domain.vo.OrderVo;
 import com.mutil.userful.domain.vo.ShippingVo;
-import com.mutil.userful.util.BigDecimalUtil;
-import com.mutil.userful.util.DateTimeUtil;
-import com.mutil.userful.util.FastDFSClientUtil;
-import com.mutil.userful.util.PropertiesUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +29,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import zhu.liang.common.util.BigDecimalUtil;
+import zhu.liang.common.util.DateTimeUtil;
+import zhu.liang.common.util.PropertiesUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,8 +62,8 @@ public class PreOrderService {
 
     @Autowired
     private MmallOrderMapper mmallOrderMapper;
-    @Autowired
-    private FastDFSClientUtil dfsClient;
+//    @Autowired
+//    private FastDFSClientUtil dfsClient = new FastDFSClientUtil();
     @Autowired
     private MmallOrderItemMapper mmallOrderItemMapper;
     @Autowired
@@ -74,7 +74,8 @@ public class PreOrderService {
     private MmallProductMapper mmallProductMapper;
     @Autowired
     private MmallShippingMapper mmallShippingMapper;
-
+    @Autowired
+    private FastDFSClientUtil dfsClient;
     /**
      * 创建订单
      * @param userId

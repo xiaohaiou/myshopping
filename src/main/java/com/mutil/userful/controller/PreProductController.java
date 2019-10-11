@@ -1,16 +1,17 @@
 package com.mutil.userful.controller;
 
 import com.mutil.userful.common.ServerResponse;
-import com.mutil.userful.domain.requestparam.ValidateResult;
-import com.mutil.userful.domain.requestparam.product.PreProductRequest;
 import com.mutil.userful.service.PreProductService;
-import com.mutil.userful.util.ValidatorUtil;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import zhu.liang.common.requestparam.product.PreProductRequest;
+import zhu.liang.common.util.HibernateValidatorUtil;
+import zhu.liang.common.util.ValidateResult;
+
 import java.util.Arrays;
 
 @Controller
@@ -40,7 +41,7 @@ public class PreProductController {
     @RequestMapping(value="/list.do",method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public ServerResponse list(@RequestBody PreProductRequest preProductRequest){
-        ValidateResult validateResult = ValidatorUtil.validator(preProductRequest);
+        ValidateResult validateResult = HibernateValidatorUtil.validator(preProductRequest);
         if(!validateResult.isSuccess()){
             return ServerResponse.createByErrorMessage(Arrays.toString(validateResult.getErrMsg()));
         }

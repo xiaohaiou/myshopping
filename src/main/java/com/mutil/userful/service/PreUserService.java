@@ -6,12 +6,12 @@ import com.mutil.userful.common.ServerResponse;
 import com.mutil.userful.common.TokenCache;
 import com.mutil.userful.dao.MmallUserMapper;
 import com.mutil.userful.domain.MmallUser;
-import com.mutil.userful.domain.requestparam.user.PreLoginRequest;
-import com.mutil.userful.domain.requestparam.user.PreRegisterRequest;
-import com.mutil.userful.domain.requestparam.user.PreUpdateUserInfoRequest;
-import com.mutil.userful.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zhu.liang.common.requestparam.user.PreLoginRequest;
+import zhu.liang.common.requestparam.user.PreRegisterRequest;
+import zhu.liang.common.requestparam.user.PreUpdateUserInfoRequest;
+import zhu.liang.common.util.MD5Util;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;

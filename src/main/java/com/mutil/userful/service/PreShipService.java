@@ -5,12 +5,12 @@ import com.github.pagehelper.PageInfo;
 import com.mutil.userful.common.ServerResponse;
 import com.mutil.userful.dao.MmallShippingMapper;
 import com.mutil.userful.domain.MmallShipping;
-import com.mutil.userful.domain.requestparam.ship.PreAddShipRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zhu.liang.common.requestparam.ship.PreAddShipRequest;
 
 import java.util.Date;
 import java.util.List;
@@ -29,7 +29,7 @@ public class PreShipService {
      * @param userId
      * @return
      */
-    public ServerResponse addorupdate(PreAddShipRequest preAddShipRequest,Integer userId){
+    public ServerResponse addorupdate(PreAddShipRequest preAddShipRequest, Integer userId){
         MmallShipping insertShip = new MmallShipping();
         final Date nowTime = new Date();
         insertShip.setUserId(userId);

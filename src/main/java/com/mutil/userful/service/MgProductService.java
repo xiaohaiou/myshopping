@@ -6,10 +6,10 @@ import com.mutil.userful.common.ServerResponse;
 import com.mutil.userful.dao.MmallProductMapper;
 import com.mutil.userful.domain.MmallProduct;
 import com.mutil.userful.domain.MmallProductWithBLOBs;
-import com.mutil.userful.domain.requestparam.product.MgAddProductRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zhu.liang.common.requestparam.product.MgAddProductRequest;
 
 import java.util.Date;
 import java.util.List;

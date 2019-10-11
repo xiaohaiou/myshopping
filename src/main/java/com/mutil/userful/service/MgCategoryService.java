@@ -6,11 +6,11 @@ import com.mutil.userful.common.ServerResponse;
 import com.mutil.userful.dao.MmallCategoryMapper;
 import com.mutil.userful.domain.MmallCategory;
 import com.mutil.userful.domain.MmallUser;
-import com.mutil.userful.domain.requestparam.category.MgAddCategoryRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zhu.liang.common.requestparam.category.MgAddCategoryRequest;
 
 import java.util.Date;
 import java.util.HashSet;

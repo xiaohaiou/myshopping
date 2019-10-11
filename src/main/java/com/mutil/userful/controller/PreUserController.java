@@ -3,13 +3,7 @@ package com.mutil.userful.controller;
 import com.mutil.userful.common.Const;
 import com.mutil.userful.common.ServerResponse;
 import com.mutil.userful.domain.MmallUser;
-import com.mutil.userful.domain.requestparam.user.PreLoginRequest;
-import com.mutil.userful.domain.requestparam.user.PreRegisterRequest;
-import com.mutil.userful.domain.requestparam.user.PreUpdateUserInfoRequest;
-import com.mutil.userful.domain.requestparam.ValidateResult;
 import com.mutil.userful.service.PreUserService;
-import com.mutil.userful.util.FastDFSClientUtil;
-import com.mutil.userful.util.ValidatorUtil;
 import io.swagger.annotations.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -17,6 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import zhu.liang.common.requestparam.user.PreLoginRequest;
+import zhu.liang.common.requestparam.user.PreRegisterRequest;
+import zhu.liang.common.requestparam.user.PreUpdateUserInfoRequest;
+import zhu.liang.common.util.HibernateValidatorUtil;
+import zhu.liang.common.util.ValidateResult;
+
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 
@@ -30,23 +30,11 @@ public class PreUserController {
     @Autowired
     private PreUserService preUserService;
 
-    /*@RequestMapping(value = "/upload",headers="content-type=multipart/form-data", method = RequestMethod.POST)
-    public String uploadFile (@RequestParam("file") MultipartFile file,HttpServletRequest request){
-        try {
-            String fileUrl = dfsClient.uploadFile(file);
-            request.setAttribute("msg", "成功上传文件，  '" + fileUrl + "'");
-            log.info(fileUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "login";
-    }*/
-
     @ApiOperation(value="用户登入操作", notes="根据用户名和密码进行登入操作")
     @RequestMapping(value="/login.do",method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public ServerResponse<MmallUser> logion(@RequestBody @ApiParam(name = "mmallUser", value = "mmallUser", required = true)PreLoginRequest loginRequest, HttpSession session){
-        ValidateResult validateResult = ValidatorUtil.validator(loginRequest);
+        ValidateResult validateResult = HibernateValidatorUtil.validator(loginRequest);
         if(!validateResult.isSuccess()){
             return ServerResponse.createByErrorMessage(Arrays.toString(validateResult.getErrMsg()));
         }
@@ -57,7 +45,7 @@ public class PreUserController {
     @RequestMapping(value="/register.do",method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public ServerResponse register(@RequestBody @ApiParam(name = "register", value = "register", required = true) PreRegisterRequest registerRequest){
-        ValidateResult validateResult = ValidatorUtil.validator(registerRequest);
+        ValidateResult validateResult = HibernateValidatorUtil.validator(registerRequest);
         if(!validateResult.isSuccess()){
             return ServerResponse.createByErrorMessage(Arrays.toString(validateResult.getErrMsg()));
         }
@@ -152,7 +140,7 @@ public class PreUserController {
         if(null == mmallUser){
             return ServerResponse.createByErrorMessage("未登入，无访问权限！");
         }
-        ValidateResult validateResult = ValidatorUtil.validator(updateUserInfoRequest);
+        ValidateResult validateResult = HibernateValidatorUtil.validator(updateUserInfoRequest);
         if(!validateResult.isSuccess()){
             return ServerResponse.createByErrorMessage(Arrays.toString(validateResult.getErrMsg()));
         }

@@ -1,4 +1,4 @@
-package com.mutil.userful.util;
+package com.mutil.userful.intercepor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -11,14 +11,19 @@ import javax.servlet.http.HttpSession;
 
 @Slf4j
 @Component
-public class UserfulIntercepor implements HandlerInterceptor {
+public class MyshoppingIntercepor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
+
+        // 登入用户验证
         HttpSession session=request.getSession(true);
         if(null==session.getAttribute("user"))
             return false;
+        // 请求参数统一验证
+
+
         return true;
     }
 

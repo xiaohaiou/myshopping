@@ -2,7 +2,6 @@ package com.mutil.userful.listener;
 
 import com.mutil.userful.service.strategy.StrategyContext;
 import com.mutil.userful.service.strategy.StrategyEnum;
-import com.mutil.userful.util.SpringBeanUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

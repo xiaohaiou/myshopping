@@ -1,13 +1,10 @@
 package com.mutil.userful.controller;
 
+import com.github.tobato.fastdfs.shop.FastDFSClientUtil;
 import com.mutil.userful.common.Const;
 import com.mutil.userful.common.ServerResponse;
 import com.mutil.userful.domain.MmallUser;
-import com.mutil.userful.domain.requestparam.ValidateResult;
-import com.mutil.userful.domain.requestparam.product.MgAddProductRequest;
 import com.mutil.userful.service.MgProductService;
-import com.mutil.userful.util.FastDFSClientUtil;
-import com.mutil.userful.util.ValidatorUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -18,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import zhu.liang.common.requestparam.product.MgAddProductRequest;
+import zhu.liang.common.util.HibernateValidatorUtil;
+import zhu.liang.common.util.ValidateResult;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -77,7 +77,7 @@ public class MgProductController {
     @ApiOperation(value="图片上传", notes="图片上传")
     @RequestMapping(value="/upload.do",headers="content-type=multipart/form-data", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse search(HttpSession session,
+    public ServerResponse upload(HttpSession session,
                                  HttpServletRequest request,
                                  @RequestParam(value = "upload_file",required = false) MultipartFile file){
         MmallUser user = (MmallUser)session.getAttribute(Const.CURRENT_USER);
@@ -105,7 +105,7 @@ public class MgProductController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "productId", value = "产品Id", required = true, paramType = "query"),
     })
-    public ServerResponse search(HttpSession session,
+    public ServerResponse detail(HttpSession session,
                                  @RequestParam(value = "productId")Integer productId){
         MmallUser user = (MmallUser)session.getAttribute(Const.CURRENT_USER);
         if(null==user){
@@ -149,7 +149,7 @@ public class MgProductController {
             return ServerResponse.createByErrorMessage("不是管理员，无操作权限！");
         }
         // 参数效验
-        ValidateResult validateResult = ValidatorUtil.validator(mgAddProductRequest);
+        ValidateResult validateResult = HibernateValidatorUtil.validator(mgAddProductRequest);
         if(!validateResult.isSuccess()){
             return ServerResponse.createByErrorMessage(Arrays.toString(validateResult.getErrMsg()));
         }
