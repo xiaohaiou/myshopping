@@ -23,7 +23,7 @@ public class TestListener implements CommandLineRunner{
 
     public void strategyTest(){
         Double result1 = strategyContext
-                .getStrategyService(StrategyEnum.STRATEGY_TYPE_1.getStrategyName()).getStrategyAccount(100.0);
+                .getStrategyService(StrategyEnum.STRATEGY_TYPE_1.getStrategyName()).getStrategyAccount(101.0);
         Double result2 = strategyContext
                 .getStrategyService(StrategyEnum.STRATEGY_TYPE_2.getStrategyName()).getStrategyAccount(100.0);
         Double result3 = strategyContext
